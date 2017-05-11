@@ -32,9 +32,11 @@ var branches = new Vue({
       $.each(data, function (_, v) {
         name = v.name;
         isStale = '';
+        isOld = '';
         status = 'fetching';
         branch = { name: name,
                    isStale: isStale,
+                   isOld: isOld,
                    status: status
                  };
         payload.push(branch);
