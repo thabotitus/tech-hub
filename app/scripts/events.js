@@ -23,16 +23,15 @@ var events = new Vue({
 
 // Functions for fetching data from github
 
-function fetch_data(auth_data) {
+function fetch_data(callback_method, auth_data, org, repo) {
   jQuery.ajax
   ({
     type: "GET",
-    url: "https://api.github.com/repos/x/y/events",
+    url: "https://api.github.com/repos/"+org+"/"+repo+"/events",
     dataType: 'json',
     headers: {"Authorization": "Basic " + btoa(auth_data)},
     success: function (data){
-      alert(data[0]);
-      callback_method(the_list);
+      map_to_hash(callback_method, data);
     },
     error: function() {
       alert('error??');
@@ -40,16 +39,29 @@ function fetch_data(auth_data) {
    });
 }
 
+function map_to_hash(callback_method, data) {
+  alert("mapping");
+}
+
+
+
 function convert_events(events) {
   // maps events to Vue...
 }
 
 function do_my_thing() {
-  fetch_from_github(convert_events, 'pv', 'xxxx');
+  fetch_from_github(convert_events);
 }
 
-function fetch_from_github(callback_method, user, token) {
- // data = fetch_data(call_backmethod, user + ":" + token);
+function fetch_from_github(callback_method) {
+  github_creds = github_details();
+  call_backmethod = function() { alert('calling home'); }
+  data = fetch_data(call_backmethod,
+                    github_creds['username'] + ":" + github_creds['token'],
+                    github_creds['org'],
+                    github_creds['repo']
+                   );
+
   result = [ { type: 'push',
              handle: 'Billy Bob',
              image_url: 'https://s-media-cache-ak0.pinimg.com/736x/3e/de/0b/3ede0bf72b5e51dc895714f1f6d9ee7d.jpg',
