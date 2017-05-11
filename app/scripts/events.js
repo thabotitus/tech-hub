@@ -45,7 +45,9 @@ function map_github_to_events_hash(callback_method, data) {
       return {type: 'push', description: 'Branch pushed'};
     } else if(event_type == 'CreateEvent') {
       return {type: 'create_branch', description: 'Branch created'};
-    } 
+    } else if(event_type == 'DeleteEvent') {
+      return {type: 'delete_branch', description: 'Branch deleted'};
+    }
     return {type: 'generic', description: 'Event of type '+ event_type +' occured'};
   }
   function branch_from(ref) {

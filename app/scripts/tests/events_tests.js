@@ -26,7 +26,7 @@ QUnit.test( "push event mapping", function( assert ) {
   event = all_data[0];
   assert.equal( event['type'], 'push', 'Type of event' );
   assert.equal( event['handle'], 'timinator', 'Handle of event' );
-  assert.equal( event['image_url'], 'https://avatars.githubusercontent.com/u/1553926?', 'Image for handle' );
+  assert.equal( event['image_url'], 'https://avatars.githubusercontent.com/u/155?', 'Image for handle' );
   assert.equal( event['repo'], 'org/repo', 'git repo for event' );
   assert.equal( event['branch'], 'allocation', 'git branch for event' );
   assert.equal( event['date'], '2017-05-11T10:02:00Z', 'date for event' );
@@ -39,7 +39,7 @@ QUnit.test( "generic event mapping", function( assert ) {
   event = all_data[0];
   assert.equal( event['type'], 'generic', 'Type of event' );
   assert.equal( event['handle'], 'timinator', 'Handle of event' );
-  assert.equal( event['image_url'], 'https://avatars.githubusercontent.com/u/1553926?', 'Image for handle' );
+  assert.equal( event['image_url'], 'https://avatars.githubusercontent.com/u/155?', 'Image for handle' );
   assert.equal( event['repo'], 'org/repo', 'git repo for event' );
   assert.equal( event['branch'], 'allocation', 'git branch for event' );
   assert.equal( event['date'], '2017-05-11T10:02:00Z', 'date for event' );
@@ -59,6 +59,19 @@ QUnit.test( "create branch event mapping", function( assert ) {
   assert.equal( event['description'], 'Branch created', 'description for event' );
 });
 
+QUnit.test( "delete branch event mapping", function( assert ) {
+  all_data = null;
+  map_github_to_events_hash(callback_method, [generate_delete_branch_event()]);
+  event = all_data[0];
+  assert.equal( event['type'], 'delete_branch', 'Type of event' );
+  assert.equal( event['handle'], 'grant', 'Handle of event' );
+  assert.equal( event['image_url'], 'https://avatars.githubusercontent.com/u/989?', 'Image for handle' );
+  assert.equal( event['repo'], 'org/repo', 'git repo for event' );
+  assert.equal( event['branch'], 'feature/other_thing', 'git branch for event' );
+  assert.equal( event['date'], '2017-05-11T07:29:18Z', 'date for event' );
+  assert.equal( event['description'], 'Branch deleted', 'description for event' );
+});
+
 function generate_generic_event() {
   return {
     "type": "SomeOtherEvent",
@@ -66,7 +79,7 @@ function generate_generic_event() {
       "login": "timinator",
       "display_login": "timinator",
       "gravatar_id": "",
-      "avatar_url": "https://avatars.githubusercontent.com/u/1553926?"
+      "avatar_url": "https://avatars.githubusercontent.com/u/155?"
     },
     "repo": {
       "name": "org/repo",
@@ -89,7 +102,7 @@ function generate_push_event() {
       "display_login": "timinator",
       "gravatar_id": "",
       "url": "https://api.github.com/users/timinator",
-      "avatar_url": "https://avatars.githubusercontent.com/u/1553926?"
+      "avatar_url": "https://avatars.githubusercontent.com/u/155?"
     },
     "repo": {
       "id": 2273570,
@@ -133,7 +146,7 @@ function generate_push_event() {
       "login": "org",
       "gravatar_id": "",
       "url": "https://api.github.com/orgs/org",
-      "avatar_url": "https://avatars.githubusercontent.com/u/3367007?"
+      "avatar_url": "https://avatars.githubusercontent.com/u/3367?"
     }
   }
 }
@@ -169,7 +182,41 @@ function generate_create_branch_event() {
       "login": "org",
       "gravatar_id": "",
       "url": "https://api.github.com/orgs/org",
-      "avatar_url": "https://avatars.githubusercontent.com/u/3367007?"
+      "avatar_url": "https://avatars.githubusercontent.com/u/3367?"
+    }
+  }
+}
+
+function generate_delete_branch_event() {
+  return {
+    "id": "5851043583",
+    "type": "DeleteEvent",
+    "actor": {
+      "id": 98919,
+      "login": "grant",
+      "display_login": "grant",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/grant",
+      "avatar_url": "https://avatars.githubusercontent.com/u/989?"
+    },
+    "repo": {
+      "id": 2273570,
+      "name": "org/repo",
+      "url": "https://api.github.com/repos/org/repo"
+    },
+    "payload": {
+      "ref": "feature/other_thing",
+      "ref_type": "branch",
+      "pusher_type": "user"
+    },
+    "public": false,
+    "created_at": "2017-05-11T07:29:18Z",
+    "org": {
+      "id": 3367007,
+      "login": "org",
+      "gravatar_id": "",
+      "url": "https://api.github.com/orgs/org",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3367?"
     }
   }
 }
