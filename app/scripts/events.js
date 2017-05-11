@@ -31,7 +31,7 @@ function fetch_data(callback_method, auth_data, org, repo) {
     dataType: 'json',
     headers: {"Authorization": "Basic " + btoa(auth_data)},
     success: function (data){
-      map_to_hash(callback_method, data);
+      map_github_to_events_hash(callback_method, data);
     },
     error: function() {
       alert('error??');
@@ -39,10 +39,14 @@ function fetch_data(callback_method, auth_data, org, repo) {
    });
 }
 
-function map_to_hash(callback_method, data) {
-  alert("mapping");
+function map_github_to_events_hash(callback_method, data) {
+  event_hashes = $.map(data, function(event) {
+    return {
+      type: 'push'
+    };
+  });
+  callback_method(event_hashes);
 }
-
 
 
 function convert_events(events) {
@@ -56,11 +60,11 @@ function do_my_thing() {
 function fetch_from_github(callback_method) {
   github_creds = github_details();
   call_backmethod = function() { alert('calling home'); }
-  data = fetch_data(call_backmethod,
-                    github_creds['username'] + ":" + github_creds['token'],
-                    github_creds['org'],
-                    github_creds['repo']
-                   );
+  fetch_data(call_backmethod,
+             github_creds['username'] + ":" + github_creds['token'],
+             github_creds['org'],
+             github_creds['repo']
+            );
 
   result = [ { type: 'push',
              handle: 'Billy Bob',
