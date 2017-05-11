@@ -84,6 +84,7 @@ var branches = new Vue({
         headers: {"Authorization": "Basic " + btoa(auth_data)},
         success: function (data){
           vt.updateStatus(data, branch);
+          vt.fetch_gh_diff_commits(branch);
         },
         error: function() {
           alert('error');
@@ -97,6 +98,35 @@ var branches = new Vue({
       }
     },
 
+    fetch_gh_diff_commits: function(branch) {
+      vt = this;
+      auth_data = this.creds().username + ":" + this.creds().token;
+      jQuery.ajax
+      ({
+        type: "GET",
+        url: "https://api.github.com/repos/" + this.creds().org + "/"+ this.creds().repo +"/compare/master..." + branch.name,
+        dataType: 'json',
+        headers: {"Authorization": "Basic " + btoa(auth_data)},
+        success: function (data){
+          vt.updateIsOld(data, branch);
+        },
+        error: function() {
+          alert('error');
+        }
+       });
+    },
+
+    updateIsOld: function(data, branch) {
+      if(data.commits.length == 0) {
+        branch.isOld = false;
+      } else {
+        lastCommit = data.commits[0].commit.committer.date;
+        lastCommitDate = new Date(lastCommit);
+        today = new Date();
+        daysOld = (today - lastCommitDate) / 1000 / 60 / 60 / 24;
+        branch.isOld = daysOld > 14;
+      }
+    },
 
     creds: function() {
       return github_details();
