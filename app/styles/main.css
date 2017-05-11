@@ -28,3 +28,9 @@ html, body {
   width: 40px;
   border-radius: 200em;
 }
+
+.mm-segment__main--grant {
+  background-image: url('../images/red-stars.jpg');
+  color: #fff;
+}
+

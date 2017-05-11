@@ -39,8 +39,8 @@ var events = new Vue({
           newEvent: newEvent
         });
       });
-      return payload.slice(0, 8);
-      // return payload;
+      // return payload.slice(0, 8);
+      return payload;
     },
 
     map_event: function(event){

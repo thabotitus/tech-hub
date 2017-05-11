@@ -68,7 +68,7 @@
             <div id="events">
 
               <div class="mm-segment github-event" v-for="event in payload">
-                <div v-bind:class="{ 'mm-segment__main--info': event.isGrant }" class="mm-segment__main">
+                <div v-bind:class="{ 'mm-segment__main--grant': event.isGrant }" class="mm-segment__main">
                   <div class="mm-row no-vertical-space">
                     <div class="mm-col mm-col-1">
                       <img class="event-avatar" v-bind:src="event.image_url"></li>
