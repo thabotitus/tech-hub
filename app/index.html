@@ -27,6 +27,7 @@
   <meta name="theme-color" content="#2F3BA2">
   <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
   <!-- <link rel="canonical" href="http://www.example.com/"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css">
   <link rel="stylesheet" href="styles/mimi.css">
 </head>
 
@@ -60,7 +61,7 @@
       <div class="mm-container mm-container--fluid">
         <div class="mm-row">
           <div class="mm-col mm-col-6">
-            <div id="events" class="mm-segments">
+            <!--<div id="events" class="mm-segments">
               <ul v-for="event in foo()">
                 <li>{{ event.type}}</li>
                 <li>{{ event.handle}}</li>
@@ -70,6 +71,13 @@
                 <li>{{ event.date }}</li>
                 <li>{{ event.description }}</li>
               </ul>
+            </div>-->
+            <div id="events">
+              <div class="ui segments">
+                <div class="ui segment" v-for="event in payload">
+                  {{ event.sentence }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -79,11 +87,16 @@
   <!-- build:js scripts/main.min.js -->
   <script src="scripts/main.js"></script>
   <!-- endbuild -->
+  <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.js"></script>
   <script src="scripts/mimi.min.js"></script>
   <script src="scripts/vue.min.js"></script>
-  <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+  <!--<script src="https://code.jquery.com/jquery-2.2.4.min.js"
           integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-          crossorigin="anonymous"></script>
+          crossorigin="anonymous"></script>-->
   <script src="scripts/creds.js"></script>
   <script src="scripts/events.js"></script>
   </body>
