@@ -67,6 +67,19 @@ QUnit.test( "delete branch event mapping", function( assert ) {
   assert.equal( event['description'], 'Branch deleted', 'description for event' );
 });
 
+QUnit.test( "Pull Request event mapping", function( assert ) {
+  all_data = null;
+  map_github_to_events_hash(callback_method, [generate_pull_request_event()]);
+  event = all_data[0];
+  assert.equal( event['type'], 'pull_request', 'Type of event' );
+  assert.equal( event['handle'], 'burn', 'Handle of event' );
+  assert.equal( event['image_url'], 'https://avatars.githubusercontent.com/u/364?', 'Image for handle' );
+  assert.equal( event['repo'], 'org/marketing-system', 'git repo for event' );
+  assert.equal( event['branch'], 'basic-seeds', 'git branch for event' );
+  assert.equal( event['date'], '2017-05-11T12:05:10Z', 'date for event' );
+  assert.equal( event['description'], 'Pull Request closed', 'description for event' );
+});
+
 function generate_generic_event() {
   return {
     "type": "SomeOtherEvent",
@@ -212,6 +225,183 @@ function generate_delete_branch_event() {
       "gravatar_id": "",
       "url": "https://api.github.com/orgs/org",
       "avatar_url": "https://avatars.githubusercontent.com/u/3367?"
+    }
+  }
+}
+
+function generate_pull_request_event() {
+  return {
+    "type": "PullRequestEvent",
+    "actor": {
+      "id": 3646962,
+      "login": "burn",
+      "display_login": "burn",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/burn",
+      "avatar_url": "https://avatars.githubusercontent.com/u/364?"
+    },
+    "repo": {
+      "id": 90954581,
+      "name": "org/marketing-system",
+      "url": "https://api.github.com/repos/org/marketing-system"
+    },
+    "payload": {
+      "action": "closed",
+      "number": 2,
+      "pull_request": {
+        "id": 120089749,
+        "number": 2,
+        "state": "closed",
+        "locked": false,
+        "title": "add first seeds!",
+        "user": {
+          "login": "burn",
+          "id": 3646962,
+          "avatar_url": "https://avatars3.githubusercontent.com/u/364?v=3",
+          "gravatar_id": "",
+          "type": "User",
+          "site_admin": false
+        },
+        "body": "Seed and fix the db auth things!",
+        "created_at": "2017-05-11T12:04:39Z",
+        "updated_at": "2017-05-11T12:05:10Z",
+        "closed_at": "2017-05-11T12:05:10Z",
+        "merged_at": "2017-05-11T12:05:10Z",
+        "merge_commit_sha": "14075f2fa1185a",
+        "assignee": null,
+        "assignees": [
+        ],
+        "requested_reviewers": [
+        ],
+        "milestone": null,
+        "head": {
+          "label": "org:basic-seeds",
+          "ref": "basic-seeds",
+          "sha": "717002ddb39ff4432",
+          "user": {
+            "login": "org",
+            "id": 3367007,
+            "avatar_url": "https://avatars1.githubusercontent.com/u/336?v=3",
+            "gravatar_id": "",
+            "type": "Organization",
+            "site_admin": false
+          },
+          "repo": {
+            "id": 90954581,
+            "name": "marketing-system",
+            "full_name": "org/marketing-system",
+            "owner": {
+              "login": "org",
+              "id": 3367007,
+              "avatar_url": "https://avatars1.githubusercontent.com/u/336?v=3",
+              "gravatar_id": "",
+              "type": "Organization",
+              "site_admin": false
+            },
+            "private": true,
+            "html_url": "https://github.com/org/marketing-system",
+            "description": null,
+            "fork": false,
+            "created_at": "2017-05-11T08:13:00Z",
+            "updated_at": "2017-05-11T08:28:49Z",
+            "pushed_at": "2017-05-11T12:05:09Z",
+            "homepage": null,
+            "size": 39,
+            "stargazers_count": 0,
+            "watchers_count": 0,
+            "language": "Ruby",
+            "has_issues": true,
+            "has_projects": true,
+            "has_downloads": true,
+            "has_wiki": true,
+            "has_pages": false,
+            "forks_count": 0,
+            "mirror_url": null,
+            "open_issues_count": 0,
+            "forks": 0,
+            "open_issues": 0,
+            "watchers": 0,
+            "default_branch": "master"
+          }
+        },
+        "base": {
+          "label": "org:master",
+          "ref": "master",
+          "sha": "342ef7d9680",
+          "user": {
+            "login": "org",
+            "id": 3367007,
+            "avatar_url": "https://avatars1.githubusercontent.com/u/336?v=3",
+            "gravatar_id": "",
+            "type": "Organization",
+            "site_admin": false
+          },
+          "repo": {
+            "id": 90954581,
+            "name": "marketing-system",
+            "full_name": "org/marketing-system",
+            "owner": {
+              "login": "org",
+              "id": 3367007,
+              "avatar_url": "https://avatars1.githubusercontent.com/u/336?v=3",
+              "gravatar_id": "",
+              "type": "Organization",
+              "site_admin": false
+            },
+            "private": true,
+            "html_url": "https://github.com/org/marketing-system",
+            "description": null,
+            "fork": false,
+            "created_at": "2017-05-11T08:13:00Z",
+            "updated_at": "2017-05-11T08:28:49Z",
+            "pushed_at": "2017-05-11T12:05:09Z",
+            "size": 39,
+            "stargazers_count": 0,
+            "watchers_count": 0,
+            "has_issues": true,
+            "has_projects": true,
+            "has_downloads": true,
+            "has_wiki": true,
+            "has_pages": false,
+            "forks_count": 0,
+            "mirror_url": null,
+            "open_issues_count": 0,
+            "forks": 0,
+            "open_issues": 0,
+            "watchers": 0,
+            "default_branch": "master"
+          }
+        },
+        "_links": {
+          "self": {
+            "href": "https://api.github.com/repos/org/marketing-system/pulls/2"
+          },
+        },
+        "merged": true,
+        "mergeable": null,
+        "rebaseable": null,
+        "mergeable_state": "unknown",
+        "merged_by": {
+          "login": "burntham",
+
+        },
+        "comments": 0,
+        "review_comments": 0,
+        "maintainer_can_modify": false,
+        "commits": 1,
+        "additions": 12,
+        "deletions": 6,
+        "changed_files": 2
+      }
+    },
+    "public": false,
+    "created_at": "2017-05-11T12:05:10Z",
+    "org": {
+      "id": 3367007,
+      "login": "org",
+      "gravatar_id": "",
+      "url": "https://api.github.com/orgs/org",
+      "avatar_url": "https://avatars.githubusercontent.com/u/336?"
     }
   }
 }
