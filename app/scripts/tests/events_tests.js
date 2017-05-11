@@ -1,8 +1,3 @@
-// Create Branch
-// Delete Branch
-// All types
-// multiple Generic
-
 var all_data;
 function callback_method(data) {
   all_data = data;
