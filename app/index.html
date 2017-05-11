@@ -52,7 +52,8 @@
         </a>
       </div>
       <div class="mm-admin-topbar__title">
-        Tech Hub
+        Prodigy &nbsp;
+        <strong>Tech Hub</strong>
       </div>
       <div class="mm-offcanvas-trigger" data-mm-offcanvas-trigger>
         <i class="ion-android-more-vertical"></i>
@@ -66,7 +67,6 @@
               Live feed
             </div>
             <div id="events">
-
               <div class="mm-segment github-event" v-for="event in payload">
                 <div v-bind:class="{ 'mm-segment__main--grant': event.isGrant }" class="mm-segment__main">
                   <div class="mm-row no-vertical-space">
@@ -96,8 +96,11 @@
               </div>
               <div class="mm-segments">
                 <div class="mm-segment" v-for="branch in payload">
-                  <div class="mm-segment__main">
+                  <div class="mm-segment__main" v-bind:class="{ 'mm-segment__main--error': branch.isStale }">
                     {{ branch.name }}
+                    <p v-if="branch.isStale">
+                      Please review
+                    </p>
                   </div>
                 </div>
               </div>

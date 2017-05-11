@@ -24,13 +24,63 @@ html, body {
   padding: 0;
 }
 
+.mm-segment__main--grant {
+  background-image: url('../images/red-stars.jpg');
+  color: #fff;
+}
+
+
 .event-avatar {
   width: 40px;
   border-radius: 200em;
 }
 
-.mm-segment__main--grant {
-  background-image: url('../images/red-stars.jpg');
-  color: #fff;
+.mm-segment__main--error {
+  position: relative;
 }
+
+
+.mm-segment__main--error:after {
+  content: '\f101';
+  font-family: Ionicons;
+  position: absolute;
+  right: 20px;
+  top: 40%;
+}
+
+.mm-segment__main--error:after {
+
+  -webkit-animation: pulse 2s ease-in;
+  -moz-animation: pulse 2s ease-in;
+  animation: pulse 2s ease-in;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}
+
+@keyframes pulse {
+  0% {
+    -webkit-transform: scale(1);
+    opacity: 0.0;
+  }
+  25% {
+    -webkit-transform: scale(1.35);
+    opacity: 0.1;
+  }
+  50% {
+    -webkit-transform: scale(1.7);
+    opacity: 0.3;
+  }
+  75% {
+    -webkit-transform: scale(2.05);
+    opacity: 0.5;
+  }
+  100% {
+    -webkit-transform: scale(2.4);
+    opacity: 0.0;
+  }
+}
+
+
+
 
