@@ -26,24 +26,80 @@ var branches = new Vue({
        });
     },
 
+    buildBranches: function (data, payload) {
+      vt = this;
+      payload = [];
+      $.each(data, function (_, v) {
+        name = v.name;
+        isStale = '';
+        status = 'fetching';
+        branch = { name: name,
+                   isStale: isStale,
+                   status: status
+                 };
+        payload.push(branch);
+        vt.fetch_gh_age(branch);
+      });
+      return payload;
+    },
+
+    fetch_gh_age: function(branch) {
+      vt = this;
+      auth_data = this.creds().username + ":" + this.creds().token;
+      jQuery.ajax
+      ({
+        type: "GET",
+        url: "https://api.github.com/repos/" + this.creds().org + "/"+ this.creds().repo +"/branches/" + branch.name,
+        dataType: 'json',
+        headers: {"Authorization": "Basic " + btoa(auth_data)},
+        success: function (data){
+          vt.updateStale(data, branch);
+          vt.fetch_gh_status(data, branch);
+        },
+        error: function() {
+          alert('error');
+        }
+       });
+    },
+
+    updateStale: function(data, branch) {
+      lastCommit = data.commit.commit.committer.date;
+      lastCommitDate = new Date(lastCommit);
+      today = new Date();
+      daysOld = (today - lastCommitDate) / 1000 / 60 / 60 / 24;
+      branch.isStale = daysOld > 14;
+    },
+
+    fetch_gh_status: function(data, branch) {
+      vt = this;
+      url = data.commit.url;
+      auth_data = this.creds().username + ":" + this.creds().token;
+      jQuery.ajax
+      ({
+        type: "GET",
+        url: url + "/statuses",
+        dataType: 'json',
+        headers: {"Authorization": "Basic " + btoa(auth_data)},
+        success: function (data){
+          vt.updateStatus(data, branch);
+        },
+        error: function() {
+          alert('error');
+        }
+       });
+    },
+
+    updateStatus: function(data, branch) {
+      if(data.length > 0) {
+        branch.status = data[0].state;
+      }
+    },
+
+
     creds: function() {
       return github_details();
     },
 
-    buildBranches: function (data, payload) {
-      payload = [];
-      $.each(data, function (_, v) {
-        name = v.name;
-        isStale = '',
-        status = ''
-        payload.push({
-          name: name,
-          isStale: isStale,
-          status: status
-        });
-      });
-      return payload;
-    }
   },
   watch: {
     payload: function() {
