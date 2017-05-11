@@ -1,10 +1,7 @@
-// nothing
-// one Generic
-// multiple Generic
-// Push
 // Create Branch
 // Delete Branch
 // All types
+// multiple Generic
 
 var all_data;
 function callback_method(data) {
@@ -47,6 +44,19 @@ QUnit.test( "generic event mapping", function( assert ) {
   assert.equal( event['branch'], 'allocation', 'git branch for event' );
   assert.equal( event['date'], '2017-05-11T10:02:00Z', 'date for event' );
   assert.equal( event['description'], 'Event of type SomeOtherEvent occured', 'description for event' );
+});
+
+QUnit.test( "create branch event mapping", function( assert ) {
+  all_data = null;
+  map_github_to_events_hash(callback_method, [generate_create_branch_event()]);
+  event = all_data[0];
+  assert.equal( event['type'], 'create_branch', 'Type of event' );
+  assert.equal( event['handle'], 'grant', 'Handle of event' );
+  assert.equal( event['image_url'], 'https://avatars.githubusercontent.com/u/155?', 'Image for handle' );
+  assert.equal( event['repo'], 'org/repo', 'git repo for event' );
+  assert.equal( event['branch'], 'fix/something', 'git branch for event' );
+  assert.equal( event['date'], '2017-05-11T06:48:13Z', 'date for event' );
+  assert.equal( event['description'], 'Branch created', 'description for event' );
 });
 
 function generate_generic_event() {
@@ -118,6 +128,42 @@ function generate_push_event() {
     },
     "public": false,
     "created_at": "2017-05-11T10:02:00Z",
+    "org": {
+      "id": 3367007,
+      "login": "org",
+      "gravatar_id": "",
+      "url": "https://api.github.com/orgs/org",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3367007?"
+    }
+  }
+}
+
+function generate_create_branch_event() {
+  return {
+    "id": "5850849846",
+    "type": "CreateEvent",
+    "actor": {
+      "id": 98919,
+      "login": "grant",
+      "display_login": "grant",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/grant",
+      "avatar_url": "https://avatars.githubusercontent.com/u/155?"
+    },
+    "repo": {
+      "id": 2273570,
+      "name": "org/repo",
+      "url": "https://api.github.com/repos/org/repo"
+    },
+    "payload": {
+      "ref": "fix/something",
+      "ref_type": "branch",
+      "master_branch": "master",
+      "description": "My Web App ",
+      "pusher_type": "user"
+    },
+    "public": false,
+    "created_at": "2017-05-11T06:48:13Z",
     "org": {
       "id": 3367007,
       "login": "org",
