@@ -56,7 +56,11 @@ var events = new Vue({
       }
     }
   }
-})
+});
+
+$(document).ready(function(){
+  events.load_events();
+});
 
 
 
@@ -86,7 +90,7 @@ var events = new Vue({
 //       alert('error??');
 //     }
 //    });
-}
+// }
 
 // function map_github_to_events_hash(callback_method, data) {
 //   function event_from(event_type) {
