@@ -75,7 +75,9 @@
             <div id="events">
               <div class="ui segments">
                 <div class="ui segment" v-for="event in payload">
-                  {{ event.sentence }}
+                  {{ event.person }}
+                  {{ event.event }}
+                 <span class="ui label blue circular">{{ event.repo }}</span>
                 </div>
               </div>
             </div>

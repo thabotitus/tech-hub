@@ -32,34 +32,47 @@ var events = new Vue({
     },
 
     build_events: function( data, payload ) {
+      payload = [];
       vt = this;
       $.each(data, function(_,v){
         person = v.actor.display_login;
         event = vt.map_event(v);
         repo = v.repo.name;
-        sentence = person + " " + event + " " + repo;
-        payload.push({sentence: sentence});
+        payload.push({
+          person: person,
+          event: event,
+          repo: repo
+        });
       });
+      console.log('updated');
       return payload;
     },
 
     map_event: function(event){
       switch(event.type) {
           case "PushEvent":
-              return 'pushed to';
+              return 'pushed updates to';
               break;
           case "CreateEvent":
-              return 'created on';
+              return 'created a branch on';
               break;
           default:
-              return 'did something';
+              return 'removed a branch on';
       }
+    },
+
+    poll: function (){
+      var vm = this;
+      setInterval(function(){
+        vm.load_events();
+      },5000);
     }
   }
 });
 
 $(document).ready(function(){
   events.load_events();
+  events.poll();
 });
 
 
