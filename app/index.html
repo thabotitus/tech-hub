@@ -29,6 +29,7 @@
   <!-- <link rel="canonical" href="http://www.example.com/"> -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css">
   <link rel="stylesheet" href="styles/mimi.css">
+  <link rel="stylesheet" href="styles/main.css">
 </head>
 
 <body class="mimi">
@@ -77,7 +78,7 @@
                 <div class="mm-segment__main">
                   <div class="mm-row no-vertical-space">
                     <div class="mm-col mm-col-1">
-                      <img v-bind:src="event.image_url"></li>
+                      <img class="event-avatar" v-bind:src="event.image_url"></li>
                     </div>
                     <div class="mm-col mm-col-8">
                       <span class="mm-topbar__user-name--cursive">{{ event.person }} &nbsp;</span>
