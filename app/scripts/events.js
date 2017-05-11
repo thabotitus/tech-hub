@@ -35,7 +35,6 @@ var events = new Vue({
       payload = [];
       vt = this;
       $.each(data, function(_,v){
-        console.log(v);
         image_url = v.actor.avatar_url;
         person = v.actor.display_login;
         event = vt.map_event(v);
@@ -43,6 +42,7 @@ var events = new Vue({
         branch = vt.branch_from(v.payload.ref, v.payload);
         time = vt.formatTime(v.created_at);
         isGrant = v.actor.login === 'grantspeelman';
+        newEvent = vt.checkNewEvent(v.created_at);
         payload.push({
           person: person,
           event: event,
@@ -50,7 +50,8 @@ var events = new Vue({
           repo: repo,
           image_url: image_url,
           time: time,
-          isGrant: isGrant
+          isGrant: isGrant,
+          newEvent: newEvent
         });
       });
       return payload.slice(0, 8);
@@ -63,10 +64,10 @@ var events = new Vue({
               return 'pushed updates to';
               break;
           case "CreateEvent":
-              return 'created a branch on';
+              return 'created branch ';
               break;
           case "DeleteEvent":
-              return 'removed a branch on';
+              return 'removed branch ';
               break;
           case "PullRequestEvent":
               return event.payload.action + ' a pull request to merge';
@@ -129,6 +130,13 @@ var events = new Vue({
             return 'Second Half of the Year';
             break;
       }
+    },
+
+    checkNewEvent: function(date){
+      now = new Date();
+      old = new Date(date);
+      diff = now.getTime() - old.getTime();
+      return diff < 300000;
     }
   }
 });
