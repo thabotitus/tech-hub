@@ -52,7 +52,7 @@
         </a>
       </div>
       <div class="mm-admin-topbar__title">
-        Tech Hub - Live Updates
+        Tech Hub
       </div>
       <div class="mm-offcanvas-trigger" data-mm-offcanvas-trigger>
         <i class="ion-android-more-vertical"></i>
@@ -62,9 +62,13 @@
       <div class="mm-container mm-container--fluid">
         <div class="mm-row">
           <div class="mm-col mm-col-8">
+            <div class="page-header">
+              Live feed
+            </div>
             <div id="events">
+
               <div class="mm-segment github-event" v-for="event in payload">
-                <div class="mm-segment__main">
+                <div v-bind:class="{ 'mm-segment__main--info': event.isGrant }" class="mm-segment__main">
                   <div class="mm-row no-vertical-space">
                     <div class="mm-col mm-col-1">
                       <img class="event-avatar" v-bind:src="event.image_url"></li>
@@ -76,8 +80,23 @@
                       <div>{{ event.time }}</div>
                     </div>
                     <div class="mm-col mm-col-3 right-aligned">
-                      <span class="mm-pill mm-pill--success mm-pill--round">{{ event.repo }}</span>
+                      <span class="mm-pill mm-pill--primary mm-pill--round">{{ event.repo }}</span>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mm-col mm-col-4">
+
+            <div id="branches">
+              <div class="page-header">
+                Branches ( {{ count }} +)
+              </div>
+              <div class="mm-segments">
+                <div class="mm-segment" v-for="branch in payload">
+                  <div class="mm-segment__main">
+                    {{ branch.name }}
                   </div>
                 </div>
               </div>
@@ -102,6 +121,7 @@
           crossorigin="anonymous"></script>-->
   <script src="scripts/creds.js"></script>
   <script src="scripts/events.js"></script>
+  <script src="scripts/branches.js"></script>
   </body>
 </html>
 

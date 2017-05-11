@@ -35,22 +35,26 @@ var events = new Vue({
       payload = [];
       vt = this;
       $.each(data, function(_,v){
+        console.log(v);
         image_url = v.actor.avatar_url;
         person = v.actor.display_login;
         event = vt.map_event(v);
         repo = v.repo.name;
         branch = vt.branch_from(v.payload.ref, v.payload);
         time = vt.formatTime(v.created_at);
+        isGrant = v.actor.login === 'grantspeelman';
         payload.push({
           person: person,
           event: event,
           branch: branch,
           repo: repo,
           image_url: image_url,
-          time: time
+          time: time,
+          isGrant: isGrant
         });
       });
-      return payload;
+      return payload.slice(0, 8);
+      // return payload;
     },
 
     map_event: function(event){
