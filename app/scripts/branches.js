@@ -8,22 +8,12 @@ var branches = new Vue({
     load_branches: function(){
       this.make_gh_call();
     },
+
     make_gh_call: function() {
       vt = this;
-      auth_data = this.creds().username + ":" + this.creds().token;
-      jQuery.ajax
-      ({
-        type: "GET",
-        url: "https://api.github.com/repos/" + this.creds().org + "/"+ this.creds().repo +"/branches",
-        dataType: 'json',
-        headers: {"Authorization": "Basic " + btoa(auth_data)},
-        success: function (data){
-          vt.payload = vt.buildBranches(data, vt.payload);
-        },
-        error: function() {
-          alert('error');
-        }
-       });
+      github.fetch("repos/" + github.creds().org + "/"+ github.creds().repo +"/branches",
+                   function (data) { vt.payload = vt.buildBranches(data, vt.payload); }
+                  );
     },
 
     buildBranches: function (data, payload) {
@@ -47,21 +37,12 @@ var branches = new Vue({
 
     fetch_gh_age: function(branch) {
       vt = this;
-      auth_data = this.creds().username + ":" + this.creds().token;
-      jQuery.ajax
-      ({
-        type: "GET",
-        url: "https://api.github.com/repos/" + this.creds().org + "/"+ this.creds().repo +"/branches/" + branch.name,
-        dataType: 'json',
-        headers: {"Authorization": "Basic " + btoa(auth_data)},
-        success: function (data){
-          vt.updateStale(data, branch);
-          vt.fetch_gh_status(data, branch);
-        },
-        error: function() {
-          alert('error');
-        }
-       });
+      github.fetch("repos/" + github.creds().org + "/"+ github.creds().repo +"/branches/" + branch.name,
+                   function (data) {
+                     vt.updateStale(data, branch);
+                     vt.fetch_gh_status(data, branch);
+                   }
+                  );
     },
 
     updateStale: function(data, branch) {
@@ -75,21 +56,12 @@ var branches = new Vue({
     fetch_gh_status: function(data, branch) {
       vt = this;
       url = data.commit.url;
-      auth_data = this.creds().username + ":" + this.creds().token;
-      jQuery.ajax
-      ({
-        type: "GET",
-        url: url + "/statuses",
-        dataType: 'json',
-        headers: {"Authorization": "Basic " + btoa(auth_data)},
-        success: function (data){
-          vt.updateStatus(data, branch);
-          vt.fetch_gh_diff_commits(branch);
-        },
-        error: function() {
-          alert('error');
-        }
-       });
+      github.fetch(url + "/statuses",
+                   function (data) {
+                     vt.updateStatus(data, branch);
+                     vt.fetch_gh_diff_commits(branch);
+                   }
+                  );
     },
 
     updateStatus: function(data, branch) {
@@ -100,20 +72,11 @@ var branches = new Vue({
 
     fetch_gh_diff_commits: function(branch) {
       vt = this;
-      auth_data = this.creds().username + ":" + this.creds().token;
-      jQuery.ajax
-      ({
-        type: "GET",
-        url: "https://api.github.com/repos/" + this.creds().org + "/"+ this.creds().repo +"/compare/master..." + branch.name,
-        dataType: 'json',
-        headers: {"Authorization": "Basic " + btoa(auth_data)},
-        success: function (data){
-          vt.updateIsOld(data, branch);
-        },
-        error: function() {
-          alert('error');
-        }
-       });
+      github.fetch("repos/" + github.creds().org + "/"+ github.creds().repo +"/compare/master..." + branch.name,
+                   function (data) {
+                     vt.updateIsOld(data, branch);
+                   }
+                  );
     },
 
     updateIsOld: function(data, branch) {
@@ -127,11 +90,6 @@ var branches = new Vue({
         branch.isOld = daysOld > 14;
       }
     },
-
-    creds: function() {
-      return github_details();
-    },
-
   },
   watch: {
     payload: function() {

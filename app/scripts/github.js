@@ -5,6 +5,8 @@ var github = {
 
   fetch: function(url, success_callback) {
     auth_data = this.creds().username + ":" + this.creds().token;
+    url = url.replace(/^https:\/\/api\.github\.com\//, '');
+
     jQuery.ajax
     ({
       type: "GET",
@@ -14,11 +16,10 @@ var github = {
       success: function (data){
         success_callback(data);
       },
-      error: function() {
-        alert('error');
+      error: function(data) {
+        console.log('error in calling github');
+        console.log(data);
       }
     });
   }
 }
-
-
