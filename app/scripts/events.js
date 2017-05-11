@@ -75,7 +75,7 @@ var events = new Vue({
       var vm = this;
       setInterval(function(){
         vm.load_events();
-      },5000);
+      }, 30000);
     },
 
     branch_from: function(ref, payload) {

@@ -61,33 +61,22 @@
     <div class="mm-content">
       <div class="mm-container mm-container--fluid">
         <div class="mm-row">
-          <div class="mm-col mm-col-6">
-            <!--<div id="events" class="mm-segments">
-              <ul v-for="event in foo()">
-                <li>{{ event.type}}</li>
-                <li>{{ event.handle}}</li>
-                <li><img v-bind:src="event.image_url"></li>
-                <li>{{ event.repo }}</li>
-                <li>{{ event.branch }}</li>
-                <li>{{ event.date }}</li>
-                <li>{{ event.description }}</li>
-              </ul>
-            </div>-->
+          <div class="mm-col mm-col-8">
             <div id="events">
-              <div class="mm-segment" v-for="event in payload">
+              <div class="mm-segment github-event" v-for="event in payload">
                 <div class="mm-segment__main">
                   <div class="mm-row no-vertical-space">
                     <div class="mm-col mm-col-1">
                       <img class="event-avatar" v-bind:src="event.image_url"></li>
                     </div>
                     <div class="mm-col mm-col-8">
-                      <span class="mm-topbar__user-name--cursive">{{ event.person }} &nbsp;</span>
+                      <div class="mm-topbar__user-name--cursive">{{ event.person }} &nbsp;</div>
                       {{ event.event }}
                       <strong>{{ event.branch }}</strong>
                       <div>{{ event.time }}</div>
                     </div>
-                    <div class="mm-col mm-col-1">
-                      <span class="mm-pill mm-pill--info">{{ event.repo }}</span>
+                    <div class="mm-col mm-col-3 right-aligned">
+                      <span class="mm-pill mm-pill--success mm-pill--round">{{ event.repo }}</span>
                     </div>
                   </div>
                 </div>
