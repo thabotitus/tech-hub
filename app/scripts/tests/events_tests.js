@@ -19,18 +19,57 @@ QUnit.test( "no data - sets to empty list", function( assert ) {
 
 QUnit.test( "one event - sets one event in list", function( assert ) {
   all_data = null;
-  map_github_to_events_hash(callback_method, [event]);
+  map_github_to_events_hash(callback_method, [generate_push_event()]);
   assert.equal( all_data.length, 1, 'one event' );
 });
 
 QUnit.test( "push event mapping", function( assert ) {
   all_data = null;
-  map_github_to_events_hash(callback_method, [event]);
+  map_github_to_events_hash(callback_method, [generate_push_event()]);
   event = all_data[0];
   assert.equal( event['type'], 'push', 'Type of event' );
+  assert.equal( event['handle'], 'timinator', 'Handle of event' );
+  assert.equal( event['image_url'], 'https://avatars.githubusercontent.com/u/1553926?', 'Image for handle' );
+  assert.equal( event['repo'], 'org/repo', 'git repo for event' );
+  assert.equal( event['branch'], 'allocation', 'git branch for event' );
+  assert.equal( event['date'], '2017-05-11T10:02:00Z', 'date for event' );
+  assert.equal( event['description'], 'Branch pushed', 'description for event' );
 });
 
-function event() {
+QUnit.test( "generic event mapping", function( assert ) {
+  all_data = null;
+  map_github_to_events_hash(callback_method, [generate_generic_event()]);
+  event = all_data[0];
+  assert.equal( event['type'], 'generic', 'Type of event' );
+  assert.equal( event['handle'], 'timinator', 'Handle of event' );
+  assert.equal( event['image_url'], 'https://avatars.githubusercontent.com/u/1553926?', 'Image for handle' );
+  assert.equal( event['repo'], 'org/repo', 'git repo for event' );
+  assert.equal( event['branch'], 'allocation', 'git branch for event' );
+  assert.equal( event['date'], '2017-05-11T10:02:00Z', 'date for event' );
+  assert.equal( event['description'], 'Event of type SomeOtherEvent occured', 'description for event' );
+});
+
+function generate_generic_event() {
+  return {
+    "type": "SomeOtherEvent",
+    "actor": {
+      "login": "timinator",
+      "display_login": "timinator",
+      "gravatar_id": "",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1553926?"
+    },
+    "repo": {
+      "name": "org/repo",
+      "url": "https://api.github.com/repos/org/repo"
+    },
+    "payload": {
+      "ref": "refs/heads/allocation",
+    },
+    "created_at": "2017-05-11T10:02:00Z",
+  }
+}
+
+function generate_push_event() {
   return {
     "id": "5851989347",
     "type": "PushEvent",

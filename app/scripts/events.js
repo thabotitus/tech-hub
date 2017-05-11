@@ -40,9 +40,25 @@ function fetch_data(callback_method, auth_data, org, repo) {
 }
 
 function map_github_to_events_hash(callback_method, data) {
+  function event_from(event_type) {
+    if(event_type == 'PushEvent') {
+      return {type: 'push', description: 'Branch pushed'};
+    }
+    return {type: 'generic', description: 'Event of type '+ event_type +' occured'};
+  }
+  function branch_from(ref) {
+    return ref.replace(/^refs\/heads\//, '');
+  }
   event_hashes = $.map(data, function(event) {
+    event_detail = event_from(event['type']);
     return {
-      type: 'push'
+      type: event_detail['type'],
+      handle: event['actor']['display_login'],
+      image_url: event['actor']['avatar_url'],
+      repo: event['repo']['name'],
+      branch: branch_from(event['payload']['ref']),
+      date: event['created_at'],
+      description: event_detail['description'] //'Branch pushed'
     };
   });
   callback_method(event_hashes);
