@@ -1,0 +1,24 @@
+var github = {
+  creds: function() {
+    return github_details();
+  },
+
+  fetch: function(url, success_callback) {
+    auth_data = this.creds().username + ":" + this.creds().token;
+    jQuery.ajax
+    ({
+      type: "GET",
+      url: "https://api.github.com/" + url,
+      dataType: 'json',
+      headers: {"Authorization": "Basic " + btoa(auth_data)},
+      success: function (data){
+        success_callback(data);
+      },
+      error: function() {
+        alert('error');
+      }
+    });
+  }
+}
+
+

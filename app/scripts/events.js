@@ -10,39 +10,24 @@ var events = new Vue({
     },
 
     make_gh_call: function() {
-      vt = this;
-      auth_data = this.creds().username + ":" + this.creds().token;
-      jQuery.ajax
-      ({
-        type: "GET",
-        url: "https://api.github.com/users/"+ this.creds().username +"/events/orgs/"+ this.creds().org,
-        dataType: 'json',
-        headers: {"Authorization": "Basic " + btoa(auth_data)},
-        success: function (data){
-          vt.payload = vt.build_events(data, vt.payload);
-        },
-        error: function() {
-          alert('error');
-        }
-       });
-    },
-
-    creds: function() {
-      return github_details();
+      et = this;
+      github.fetch("users/"+ github.creds().username +"/events/orgs/"+ github.creds().org,
+               function (data) { et.payload = et.build_events(data, et.payload); }
+              );
     },
 
     build_events: function( data, payload ) {
       payload = [];
-      vt = this;
+      et = this;
       $.each(data, function(_,v){
         image_url = v.actor.avatar_url;
         person = v.actor.display_login;
-        event = vt.map_event(v);
+        event = et.map_event(v);
         repo = v.repo.name;
-        branch = vt.branch_from(v.payload.ref, v.payload);
-        time = vt.formatTime(v.created_at);
+        branch = et.branch_from(v.payload.ref, v.payload);
+        time = et.formatTime(v.created_at);
         isGrant = v.actor.login === 'grantspeelman';
-        newEvent = vt.checkNewEvent(v.created_at);
+        newEvent = et.checkNewEvent(v.created_at);
         payload.push({
           person: person,
           event: event,
@@ -95,10 +80,10 @@ var events = new Vue({
     },
 
     formatTime: function(time) {
-      vt = this;
+      et = this;
       date = new Date(time);
       day = date.getDate();
-      month = vt.monthMapper(date.getMonth() + 1);
+      month = et.monthMapper(date.getMonth() + 1);
       year = date.getFullYear();
       hour = date.getUTCHours() + 2;
       minutes = date.getUTCMinutes();
