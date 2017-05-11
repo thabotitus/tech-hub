@@ -73,11 +73,22 @@
               </ul>
             </div>-->
             <div id="events">
-              <div class="ui segments">
-                <div class="ui segment" v-for="event in payload">
-                  {{ event.person }}
-                  {{ event.event }}
-                 <span class="ui label blue circular">{{ event.repo }}</span>
+              <div class="mm-segment" v-for="event in payload">
+                <div class="mm-segment__main">
+                  <div class="mm-row no-vertical-space">
+                    <div class="mm-col mm-col-1">
+                      <img v-bind:src="event.image_url"></li>
+                    </div>
+                    <div class="mm-col mm-col-8">
+                      <span class="mm-topbar__user-name--cursive">{{ event.person }} &nbsp;</span>
+                      {{ event.event }}
+                      <strong>{{ event.branch }}</strong>
+                      <div>{{ event.time }}</div>
+                    </div>
+                    <div class="mm-col mm-col-1">
+                      <span class="mm-pill mm-pill--info">{{ event.repo }}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

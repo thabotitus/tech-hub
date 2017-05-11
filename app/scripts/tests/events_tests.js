@@ -3,6 +3,19 @@ function callback_method(data) {
   all_data = data;
 }
 
+function map_github_to_events_hash(func, data) {
+  all_data = events.build_events(data, all_data)
+}
+
+function github_details() {
+  return {
+    username: '',
+    token: '',
+    org: '',
+    repo: ''
+  };
+}
+
 QUnit.test( "no data - sets to empty list", function( assert ) {
   all_data = null;
   map_github_to_events_hash(callback_method, []);
@@ -19,65 +32,65 @@ QUnit.test( "push event mapping", function( assert ) {
   all_data = null;
   map_github_to_events_hash(callback_method, [generate_push_event()]);
   event = all_data[0];
-  assert.equal( event['type'], 'push', 'Type of event' );
-  assert.equal( event['handle'], 'timinator', 'Handle of event' );
+  assert.equal( event['event'], 'pushed updates to', 'Type of event' );
+  assert.equal( event['person'], 'timinator', 'Handle of event' );
   assert.equal( event['image_url'], 'https://avatars.githubusercontent.com/u/155?', 'Image for handle' );
   assert.equal( event['repo'], 'org/repo', 'git repo for event' );
   assert.equal( event['branch'], 'allocation', 'git branch for event' );
-  assert.equal( event['date'], '2017-05-11T10:02:00Z', 'date for event' );
-  assert.equal( event['description'], 'Branch pushed', 'description for event' );
+  assert.equal( event['time'], '11 May, 2017 @ 12:2', 'date for event' );
+//  assert.equal( event['description'], 'Branch pushed', 'description for event' );
 });
 
 QUnit.test( "generic event mapping", function( assert ) {
   all_data = null;
   map_github_to_events_hash(callback_method, [generate_generic_event()]);
   event = all_data[0];
-  assert.equal( event['type'], 'generic', 'Type of event' );
-  assert.equal( event['handle'], 'timinator', 'Handle of event' );
+  assert.equal( event['event'], 'did something on', 'Type of event' );
+  assert.equal( event['person'], 'timinator', 'Handle of event' );
   assert.equal( event['image_url'], 'https://avatars.githubusercontent.com/u/155?', 'Image for handle' );
   assert.equal( event['repo'], 'org/repo', 'git repo for event' );
   assert.equal( event['branch'], 'allocation', 'git branch for event' );
-  assert.equal( event['date'], '2017-05-11T10:02:00Z', 'date for event' );
-  assert.equal( event['description'], 'Event of type SomeOtherEvent occured', 'description for event' );
+  assert.equal( event['time'], '11 May, 2017 @ 12:2', 'date for event' );
+  //assert.equal( event['description'], 'Event of type SomeOtherEvent occured', 'description for event' );
 });
 
 QUnit.test( "create branch event mapping", function( assert ) {
   all_data = null;
   map_github_to_events_hash(callback_method, [generate_create_branch_event()]);
   event = all_data[0];
-  assert.equal( event['type'], 'create_branch', 'Type of event' );
-  assert.equal( event['handle'], 'grant', 'Handle of event' );
+  assert.equal( event['event'], 'created a branch on', 'Type of event' );
+  assert.equal( event['person'], 'grant', 'Handle of event' );
   assert.equal( event['image_url'], 'https://avatars.githubusercontent.com/u/155?', 'Image for handle' );
   assert.equal( event['repo'], 'org/repo', 'git repo for event' );
   assert.equal( event['branch'], 'fix/something', 'git branch for event' );
-  assert.equal( event['date'], '2017-05-11T06:48:13Z', 'date for event' );
-  assert.equal( event['description'], 'Branch created', 'description for event' );
+  assert.equal( event['time'], '11 May, 2017 @ 8:48', 'date for event' );
+  //assert.equal( event['description'], 'Branch created', 'description for event' );
 });
 
 QUnit.test( "delete branch event mapping", function( assert ) {
   all_data = null;
   map_github_to_events_hash(callback_method, [generate_delete_branch_event()]);
   event = all_data[0];
-  assert.equal( event['type'], 'delete_branch', 'Type of event' );
-  assert.equal( event['handle'], 'grant', 'Handle of event' );
+  assert.equal( event['event'], 'removed a branch on', 'Type of event' );
+  assert.equal( event['person'], 'grant', 'Handle of event' );
   assert.equal( event['image_url'], 'https://avatars.githubusercontent.com/u/989?', 'Image for handle' );
   assert.equal( event['repo'], 'org/repo', 'git repo for event' );
   assert.equal( event['branch'], 'feature/other_thing', 'git branch for event' );
-  assert.equal( event['date'], '2017-05-11T07:29:18Z', 'date for event' );
-  assert.equal( event['description'], 'Branch deleted', 'description for event' );
+  assert.equal( event['time'], '11 May, 2017 @ 9:29', 'date for event' );
+  //assert.equal( event['description'], 'Branch deleted', 'description for event' );
 });
 
 QUnit.test( "Pull Request event mapping", function( assert ) {
   all_data = null;
   map_github_to_events_hash(callback_method, [generate_pull_request_event()]);
   event = all_data[0];
-  assert.equal( event['type'], 'pull_request', 'Type of event' );
-  assert.equal( event['handle'], 'burn', 'Handle of event' );
+  assert.equal( event['event'], 'did something on', 'Type of event' );
+  assert.equal( event['person'], 'burn', 'Handle of event' );
   assert.equal( event['image_url'], 'https://avatars.githubusercontent.com/u/364?', 'Image for handle' );
   assert.equal( event['repo'], 'org/marketing-system', 'git repo for event' );
   assert.equal( event['branch'], 'basic-seeds', 'git branch for event' );
-  assert.equal( event['date'], '2017-05-11T12:05:10Z', 'date for event' );
-  assert.equal( event['description'], 'Pull Request closed', 'description for event' );
+  assert.equal( event['time'], '11 May, 2017 @ 14:5', 'date for event' );
+  //assert.equal( event['description'], 'Pull Request closed', 'description for event' );
 });
 
 function generate_generic_event() {
