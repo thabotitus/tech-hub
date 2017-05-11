@@ -61,7 +61,15 @@
         <div class="mm-row">
           <div class="mm-col mm-col-6">
             <div id="events" class="mm-segments">
-              {{ message }}
+              <ul v-for="event in foo()">
+                <li>{{ event.type}}</li>
+                <li>{{ event.handle}}</li>
+                <li><img v-bind:src="event.image_url"></li>
+                <li>{{ event.repo }}</li>
+                <li>{{ event.branch }}</li>
+                <li>{{ event.date }}</li>
+                <li>{{ event.description }}</li>
+              </ul>
             </div>
           </div>
         </div>
