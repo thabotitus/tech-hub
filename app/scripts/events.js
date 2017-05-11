@@ -35,16 +35,21 @@ var events = new Vue({
       payload = [];
       vt = this;
       $.each(data, function(_,v){
+        image_url = v.actor.avatar_url;
         person = v.actor.display_login;
         event = vt.map_event(v);
         repo = v.repo.name;
+        branch = vt.branch_from(v.payload.ref);
+        time = vt.formatTime(v.created_at);
         payload.push({
           person: person,
           event: event,
-          repo: repo
+          branch: branch,
+          repo: repo,
+          image_url: image_url,
+          time: time
         });
       });
-      console.log('updated');
       return payload;
     },
 
@@ -66,6 +71,48 @@ var events = new Vue({
       setInterval(function(){
         vm.load_events();
       },5000);
+    },
+
+    branch_from: function(ref) {
+      return ref.replace(/^refs\/heads\//, '');
+    },
+
+    formatTime: function(time) {
+      vt = this;
+      date = new Date(time);
+      day = date.getDate();
+      month = vt.monthMapper(date.getMonth() + 1);
+      year = date.getFullYear();
+      hour = date.getUTCHours() + 2;
+      minutes = date.getUTCMinutes();
+
+      return day + " " + month + ", " + year + ' @ ' + hour + ":" + minutes;
+    },
+
+    monthMapper: function(month){
+      switch(month) {
+          case 1:
+            return 'Jan';
+            break;
+          case 2:
+            return 'Feb';
+            break;
+          case 3:
+            return 'Mar';
+            break;
+          case 4:
+            return 'Apr';
+            break;
+          case 5:
+            return 'May';
+            break;
+          case 6:
+            return 'June';
+            break;
+          default:
+            return 'Second Half of the Year';
+            break;
+      }
     }
   }
 });
@@ -88,48 +135,31 @@ $(document).ready(function(){
 
 // Functions for fetching data from github
 
-// function fetch_data(callback_method, auth_data, org, repo) {
-//   jQuery.ajax
-//   ({
-//     type: "GET",
-//     url: "https://api.github.com/repos/"+org+"/"+repo+"/events",
-//     dataType: 'json',
-//     headers: {"Authorization": "Basic " + btoa(auth_data)},
-//     success: function (data){
-//       map_github_to_events_hash(callback_method, data);
-//       return call_me_back(data);
-//     },
-//     error: function() {
-//       alert('error??');
-//     }
-//    });
-// }
-
-// function map_github_to_events_hash(callback_method, data) {
-//   function event_from(event_type) {
-//     if(event_type == 'PushEvent') {
-//       return {type: 'push', description: 'Branch pushed'};
-//     } else if(event_type == 'CreateEvent') {
-//       return {type: 'create_branch', description: 'Branch created'};
-//     } else if(event_type == 'DeleteEvent') {
-//       return {type: 'delete_branch', description: 'Branch deleted'};
-//     }
-//     return {type: 'generic', description: 'Event of type '+ event_type +' occured'};
-//   }
-//   function branch_from(ref) {
-//     return ref.replace(/^refs\/heads\//, '');
-//   }
-//   event_hashes = $.map(data, function(event) {
-//     event_detail = event_from(event['type']);
-//     return {
-//       type: event_detail['type'],
-//       handle: event['actor']['display_login'],
-//       image_url: event['actor']['avatar_url'],
-//       repo: event['repo']['name'],
-//       branch: branch_from(event['payload']['ref']),
-//       date: event['created_at'],
-//       description: event_detail['description'] //'Branch pushed'
-//     };
-//   });
-//   callback_method(event_hashes);
-// }
+function map_github_to_events_hash(callback_method, data) {
+  function event_from(event_type) {
+    if(event_type == 'PushEvent') {
+      return {type: 'push', description: 'Branch pushed'};
+    } else if(event_type == 'CreateEvent') {
+      return {type: 'create_branch', description: 'Branch created'};
+    } else if(event_type == 'DeleteEvent') {
+      return {type: 'delete_branch', description: 'Branch deleted'};
+    }
+    return {type: 'generic', description: 'Event of type '+ event_type +' occured'};
+  }
+  function branch_from(ref) {
+    return ref.replace(/^refs\/heads\//, '');
+  }
+  event_hashes = $.map(data, function(event) {
+    event_detail = event_from(event['type']);
+    return {
+      type: event_detail['type'],
+      handle: event['actor']['display_login'],
+      image_url: event['actor']['avatar_url'],
+      repo: event['repo']['name'],
+      branch: branch_from(event['payload']['ref']),
+      date: event['created_at'],
+      description: event_detail['description'] //'Branch pushed'
+    };
+  });
+  callback_method(event_hashes);
+}
