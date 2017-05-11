@@ -84,7 +84,7 @@ QUnit.test( "Pull Request event mapping", function( assert ) {
   all_data = null;
   map_github_to_events_hash(callback_method, [generate_pull_request_event()]);
   event = all_data[0];
-  assert.equal( event['event'], 'did something on', 'Type of event' );
+  assert.equal( event['event'], 'closed a pull request to merge', 'Type of event' );
   assert.equal( event['person'], 'burn', 'Handle of event' );
   assert.equal( event['image_url'], 'https://avatars.githubusercontent.com/u/364?', 'Image for handle' );
   assert.equal( event['repo'], 'org/marketing-system', 'git repo for event' );

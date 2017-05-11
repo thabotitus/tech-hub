@@ -15,7 +15,7 @@ var events = new Vue({
       jQuery.ajax
       ({
         type: "GET",
-        url: "https://api.github.com/repos/"+ this.creds().org +"/"+ this.creds().repo +"/events",
+        url: "https://api.github.com/users/"+ this.creds().username +"/events/orgs/"+ this.creds().org,
         dataType: 'json',
         headers: {"Authorization": "Basic " + btoa(auth_data)},
         success: function (data){
@@ -64,6 +64,8 @@ var events = new Vue({
           case "DeleteEvent":
               return 'removed a branch on';
               break;
+          case "PullRequestEvent":
+              return event.payload.action + ' a pull request to merge';
           default:
               return 'did something on';
       }
