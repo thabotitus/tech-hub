@@ -36,6 +36,13 @@ var branches = new Vue({
       return payload;
     },
 
+    sortByMostRecent: function() {
+      vt = this;
+      vt.payload = vt.payload.sort(function(a, b) {
+        return new Date(b.lastCommit) - new Date(a.lastCommit);
+      });
+    },
+
     fetch_gh_age: function(branch) {
       vt = this;
       github.fetch("repos/" + github.creds().org + "/"+ github.creds().repo +"/branches/" + branch.name,
@@ -54,6 +61,7 @@ var branches = new Vue({
       daysOld = (today - lastCommitDate) / 1000 / 60 / 60 / 24;
       branch.lastCommit = vt.formatTime(lastCommit);
       branch.isStale = daysOld > 14;
+      vt.sortByMostRecent();
     },
 
     formatTime: function(time) {
