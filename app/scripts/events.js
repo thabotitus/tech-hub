@@ -86,7 +86,7 @@ var events = new Vue({
       month = et.monthMapper(date.getMonth() + 1);
       year = date.getFullYear();
       hour = date.getUTCHours() + 2;
-      minutes = date.getUTCMinutes();
+      minutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
 
       return day + " " + month + ", " + year + ' @ ' + hour + ":" + minutes;
     },

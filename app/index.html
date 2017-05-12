@@ -96,10 +96,12 @@
               </div>
               <div class="mm-segments">
                 <div class="mm-segment" v-for="branch in payload">
-                  <div class="mm-segment__main" v-bind:class="{ 'mm-segment__main--error': branch.isStale }">
+                  <div class="mm-segment__main" v-bind:class="{ 'mm-segment__main--warning': branch.isStale }">
                     {{ branch.name }}
                     <p v-if="branch.isStale">
-                      Please review
+                      <span class="mm-pill mm-pill--warning" style="margin-top: 8px;">
+                        Stale - Please review
+                      </span>
                     </p>
                   </div>
                 </div>
