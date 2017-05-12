@@ -11,7 +11,7 @@ var branches = new Vue({
 
     make_gh_call: function() {
       vt = this;
-      github.fetch("repos/" + github.creds().org + "/"+ github.creds().repo +"/branches",
+      github.fetch("repos/" + github.creds().org + "/"+ github.creds().repo +"/branches?per_page=100",
                    function (data) { vt.payload = vt.buildBranches(data, vt.payload); }
                   );
     },
