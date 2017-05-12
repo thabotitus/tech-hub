@@ -92,7 +92,7 @@
 
             <div id="branches">
               <div class="page-header">
-                Branches ( {{ count }} +)
+                Branches ( {{ count }} )
               </div>
               <div class="mm-segments">
                 <div class="mm-segment" v-for="branch in payload">
@@ -100,7 +100,29 @@
                     {{ branch.name }}
                     <p v-if="branch.isStale">
                       <span class="mm-pill mm-pill--warning" style="margin-top: 8px;">
-                        Stale - Please review
+                        Stale - Last Commit - {{ branch.lastCommit }}
+                      </span>
+                      <span class="mm-pill " style="margin-top: 8px;"
+                            v-bind:class="[
+                              {'mm-pill--success': branch.status === 'success'},
+                              {'mm-pill--info': branch.status === 'pending'},
+                              {'mm-pill--error': branch.status === 'failure'}
+                            ]">
+                        <i v-if="branch.status === 'success'" class="ion-checkmark" style="margin-right: 10px"></i>
+                        <i v-if="branch.status === 'failure'" class="ion-close" style="margin-right: 10px"></i>
+                        Build {{ branch.status }}
+                      </span>
+                    </p>
+                    <p v-if="!branch.isStale">
+                      <span class="mm-pill " style="margin-top: 8px;"
+                            v-bind:class="[
+                              {'mm-pill--success': branch.status === 'success'},
+                              {'mm-pill--info': branch.status === 'pending'},
+                              {'mm-pill--error': branch.status === 'failure'}
+                            ]">
+                        <i v-if="branch.status === 'success'" class="ion-checkmark" style="margin-right: 10px"></i>
+                        <i v-if="branch.status === 'failure'" class="ion-close" style="margin-right: 10px"></i>
+                        Build {{ branch.status }}
                       </span>
                     </p>
                   </div>

@@ -92,29 +92,8 @@ var events = new Vue({
     },
 
     monthMapper: function(month){
-      switch(month) {
-          case 1:
-            return 'Jan';
-            break;
-          case 2:
-            return 'Feb';
-            break;
-          case 3:
-            return 'Mar';
-            break;
-          case 4:
-            return 'Apr';
-            break;
-          case 5:
-            return 'May';
-            break;
-          case 6:
-            return 'June';
-            break;
-          default:
-            return 'Second Half of the Year';
-            break;
-      }
+      months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      return months[month - 1];
     },
 
     checkNewEvent: function(date){

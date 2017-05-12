@@ -35,12 +35,12 @@ html, body {
   border-radius: 200em;
 }
 
-.mm-segment__main--error {
+.mm-segment__main--warning {
   position: relative;
 }
 
 
-.mm-segment__main--error:after {
+.mm-segment__main--warning:after {
   content: '\f101';
   font-family: Ionicons;
   position: absolute;
@@ -48,7 +48,7 @@ html, body {
   top: 40%;
 }
 
-.mm-segment__main--error:after {
+.mm-segment__main--warning:after {
 
   -webkit-animation: pulse 2s ease-in;
   -moz-animation: pulse 2s ease-in;

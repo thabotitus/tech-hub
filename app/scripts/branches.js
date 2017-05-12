@@ -27,7 +27,8 @@ var branches = new Vue({
         branch = { name: name,
                    isStale: isStale,
                    isOld: isOld,
-                   status: status
+                   status: status,
+                   lastCommit: ''
                  };
         payload.push(branch);
         vt.fetch_gh_age(branch);
@@ -46,11 +47,30 @@ var branches = new Vue({
     },
 
     updateStale: function(data, branch) {
+      vt = this;
       lastCommit = data.commit.commit.committer.date;
       lastCommitDate = new Date(lastCommit);
       today = new Date();
       daysOld = (today - lastCommitDate) / 1000 / 60 / 60 / 24;
+      branch.lastCommit = vt.formatTime(lastCommit);
       branch.isStale = daysOld > 14;
+    },
+
+    formatTime: function(time) {
+      et = this;
+      date = new Date(time);
+      day = date.getDate();
+      month = et.monthMapper(date.getMonth() + 1);
+      year = date.getFullYear();
+      hour = date.getUTCHours() + 2;
+      minutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+
+      return day + " " + month + ", " + year + ' @ ' + hour + ":" + minutes;
+    },
+
+    monthMapper: function(month){
+      months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      return months[month - 1];
     },
 
     fetch_gh_status: function(data, branch) {
