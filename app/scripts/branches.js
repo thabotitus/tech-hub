@@ -107,6 +107,13 @@ var branches = new Vue({
                   );
     },
 
+    poll: function (){
+      var vm = this;
+      setInterval(function(){
+        vm.load_branches();
+      }, 30000);
+    },
+
     updateIsOld: function(data, branch) {
       if(data.commits.length == 0) {
         branch.isOld = false;
@@ -129,5 +136,6 @@ var branches = new Vue({
 $(document).ready(function () {
   setTimeout(function(){
     branches.load_branches();
+    branches.poll();
   },2000);
 });
