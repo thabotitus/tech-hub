@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tech Hub - Live Feed</title>
+  <!-- Disable tap highlight on IE -->
+  <meta name="msapplication-tap-highlight" content="no">
+  <!-- Web Application Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="Tech Hub">
+  <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Tech Hub">
+  <link rel="apple-touch-icon" href="images/touch/apple-touch-icon.png">
+  <!-- Tile icon for Win8 (144x144 + tile color) -->
+  <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+  <meta name="msapplication-TileColor" content="#2F3BA2">
+  <!-- Color the status bar on mobile devices -->
+  <meta name="theme-color" content="#2F3BA2">
+  <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+  <!-- <link rel="canonical" href="http://www.example.com/"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css">
+  <link rel="stylesheet" href="styles/mimi.css">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body class="mimi">
+  <div class="mm-offcanvas">
+    <div class="mm-offcanvas__header">
+      Tech Hub
+      <span class="mm-offcavas__close" data-close-offcanvas>
+        <i class="ion-close"></i>
+      </span>
+    </div>
+    <ul class="mm-offcanvas__menu" data-offcanvas-menu>
+      <li class="mm-offcanvas__menu-item"><a href="#">Refresh</a></li>
+    </ul>
+  </div>
+  <div class="mm-main">
+    <div class="mm-admin-topbar">
+      <div class="mm-topbar__logo">
+        <a href="demo.html">
+          <img src="images/prodigy.png" alt="">
+        </a>
+      </div>
+      <div class="mm-admin-topbar__title">
+        Prodigy &nbsp;
+        <strong>Tech Hub</strong>
+      </div>
+      <div class="mm-offcanvas-trigger" data-mm-offcanvas-trigger>
+        <i class="ion-android-more-vertical"></i>
+      </div>
+    </div>
+    <div class="mm-content">
+      <div class="mm-container mm-container--fluid">
+        <div class="mm-row">
+          <div class="mm-col mm-col-8">
+            <div class="page-header">
+              Live feed
+            </div>
+            <div id="events">
+              <div class="mm-segment github-event" v-for="event in payload">
+                <div v-bind:class="{ 'mm-segment__main--grant': event.isGrant }" class="mm-segment__main">
+                  <div class="mm-row no-vertical-space">
+                    <div class="mm-col mm-col-1">
+                      <img class="event-avatar" v-bind:src="event.image_url"></li>
+                    </div>
+                    <div class="mm-col mm-col-8">
+                      <div class="mm-topbar__user-name--cursive">{{ event.person }} &nbsp;</div>
+                      {{ event.event }}
+                      <strong>{{ event.branch }}</strong>
+                      <span v-if="event.newEvent" class="mm-pill mm-pill--success mm-pill--round">New Event</span>
+                      <div>{{ event.time }}</div>
+                    </div>
+                    <div class="mm-col mm-col-3 right-aligned">
+                      <span class="mm-pill mm-pill--primary mm-pill--round">{{ event.repo }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mm-col mm-col-4">
+
+            <div id="branches">
+              <div class="page-header">
+                Branches ( {{ count }} )
+              </div>
+              <div class="mm-segments">
+                <div class="mm-segment" v-for="branch in payload">
+                  <div class="mm-segment__main" v-bind:class="[{ 'mm-segment__main--warning': branch.isStale }, {'mm-segment__main--error': branch.isOld }]">
+                    {{ branch.name }}
+                    <p v-if="branch.isStale">
+                      <span class="mm-pill mm-pill--warning" style="margin-top: 8px;">
+                        Stale - Last Commit - {{ branch.lastCommit }}
+                      </span>
+                      <span class="mm-pill " style="margin-top: 8px;" v-bind:class="[
+                              {'mm-pill--success': branch.status === 'success'},
+                              {'mm-pill--info': branch.status === 'pending'},
+                              {'mm-pill--error': branch.status === 'failure'}
+                            ]">
+                        <i v-if="branch.status === 'success'" class="ion-checkmark" style="margin-right: 10px"></i>
+                        <i v-if="branch.status === 'failure'" class="ion-close" style="margin-right: 10px"></i>
+                        Build {{ branch.status }}
+                      </span>
+                    </p>
+                    <p v-if="!branch.isStale">
+                      <span class="mm-pill " style="margin-top: 8px;" v-bind:class="[
+                              {'mm-pill--success': branch.status === 'success'},
+                              {'mm-pill--info': branch.status === 'pending'},
+                              {'mm-pill--error': branch.status === 'failure'}
+                            ]">
+                        <i v-if="branch.status === 'success'" class="ion-checkmark" style="margin-right: 10px"></i>
+                        <i v-if="branch.status === 'failure'" class="ion-close" style="margin-right: 10px"></i>
+                        Build {{ branch.status }}
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- build:js scripts/main.min.js -->
+  <script src="scripts/main.js"></script>
+  <!-- endbuild -->
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.js"></script>
+  <script src="scripts/mimi.min.js"></script>
+  <script src="scripts/vue.min.js"></script>
+  <!--<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+          integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+          crossorigin="anonymous"></script>-->
+  <script src="scripts/creds.js"></script>
+  <script src="scripts/github.js"></script>
+  <script src="scripts/events.js"></script>
+  <script src="scripts/branches.js"></script>
+</body>
+
+</html>
